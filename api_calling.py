@@ -1,4 +1,4 @@
-from google.generativeai import genai
+import google.generativeai as genai
 from dotenv import load_dotenv
 import os
 from gtts import gTTS
@@ -10,10 +10,10 @@ load_dotenv()
 
 api_key = os.getenv("GEMINI_API_KEY")
 
-client = genai.Client(api_key=api_key)
+client = genai.configure(api_key=api_key)
 
 def note_generate(images):
-    response = client.models.generate_content(
+    response = genai.GenerativeModel().generate_content(
         model="gemini-3-flash-preview",
         contents=[
            images,
@@ -31,7 +31,7 @@ def audio_transcription(text):
 
 def quiz_generator(images,difficulty):
     prompt = f"Generate 3 quizes based on the {difficulty} make sure to add markdown to differentiate the options"
-    response = client.models.generate_content(
+    response = genai.GenerativeModel().generate_content(
         model="gemini-3-flash-preview",
         contents=[
            images,
